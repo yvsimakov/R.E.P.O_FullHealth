@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.3.0] - 2025-03-31
+
+### Added
+
+- Parameter 'WorkMode' - configure work mode (Host - works only on host, HostAndClient - works on host and client)
+- Parameter 'HealMode' - configure heal mode (All - heal all, Self - self-heal)
+
 ## [1.2.0] - 2025-03-31
 
 ### Fixed
