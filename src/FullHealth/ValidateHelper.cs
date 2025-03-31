@@ -10,7 +10,7 @@ public static class ValidateHelper
             return false;
         }
 
-        if (!SemiFunc.RunIsArena() && !SemiFunc.RunIsShop() && !SemiFunc.RunIsLevel())
+        if (!SemiFunc.RunIsArena() && !SemiFunc.RunIsShop() && !SemiFunc.RunIsLevel() && !SemiFunc.RunIsLobby())
         {
             Plugin.Logger.LogDebug("This is not a game phase");
             return false;

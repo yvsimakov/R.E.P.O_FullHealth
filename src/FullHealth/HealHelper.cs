@@ -9,12 +9,21 @@ internal static class HealHelper
     internal static async Task Heal()
     {
         var cts = new CancellationTokenSource(60000);
-        
+
         while (true)
         {
             if (cts.IsCancellationRequested)
             {
+                Plugin.Logger.LogDebug("Timeout exceeded, operation cancelled");
                 return;
+            }
+
+            Plugin.Logger.LogDebug("Waiting for all players to land");
+            await Task.Delay(1000, CancellationToken.None);
+
+            if (SemiFunc.RunIsLobby())
+            {
+                break;
             }
 
             var players = SemiFunc.PlayerGetList();
@@ -24,9 +33,6 @@ internal static class HealHelper
             {
                 break;
             }
-
-            Plugin.Logger.LogDebug("Waiting for all players to land");
-            await Task.Delay(1000, CancellationToken.None);
         }
 
         foreach (var player in SemiFunc.PlayerGetList())
@@ -36,20 +42,14 @@ internal static class HealHelper
 
             if (playerHealthValue >= expectedHealth)
             {
-                Plugin.Logger.LogDebug($"Player's health '{playerHealthValue}' is higher or equal than expected '{expectedHealth}', so health is not changed");
+                Plugin.Logger.LogDebug(
+                    $"The health of the player '{player.playerName}' is '{playerHealthValue}' and this is is more or equal than expected '{expectedHealth}', so health is not changed");
                 return;
             }
 
-            if (SemiFunc.IsMultiplayer())
-            {
-                player.playerHealth.HealOtherRPC(expectedHealth - playerHealthValue, true);
-            }
-            else
-            {
-                player.playerHealth.HealOther(expectedHealth - playerHealthValue, true);
-            }
+            player.playerHealth.HealOther(expectedHealth - playerHealthValue, true);
 
-            Plugin.Logger.LogDebug($"Player's health has been changed from '{playerHealthValue}' to '{expectedHealth}'");
+            Plugin.Logger.LogDebug($"The health of the player '{player.playerName}' has been changed from '{playerHealthValue}' to '{expectedHealth}'");
         }
     }
 }

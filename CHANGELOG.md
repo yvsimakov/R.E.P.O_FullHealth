@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.2.0] - 2025-03-31
+
+### Fixed
+
+- Fixed functionality in multiplayer, now if you are the host, other players will also be healed
+
 ## [1.1.0] - 2025-03-30
 
 ### Added
