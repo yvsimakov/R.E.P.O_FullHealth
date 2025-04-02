@@ -8,4 +8,5 @@ public static class Configuration
     public static ConfigEntry<decimal> Percent { get; set; }
     public static ConfigEntry<WorkMode> WorkMode { get; set; }
     public static ConfigEntry<HealMode> HealMode { get; set; }
+    public static ConfigEntry<PhaseMode> PhaseMode { get; set; }
 }

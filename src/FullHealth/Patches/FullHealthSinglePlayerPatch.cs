@@ -11,14 +11,20 @@ public class FullHealthSinglePlayerPatch
     {
         Plugin.Logger.LogDebug("StartRound patch");
 
-        if (!ValidateHelper.IsValid())
+        if (!Configuration.Enabled.Value)
         {
+            Plugin.Logger.LogDebug("The mod is disabled, so health is not changed");
             return;
         }
 
         if (SemiFunc.IsMultiplayer())
         {
             Plugin.Logger.LogDebug("This is not a single player");
+            return;
+        }
+
+        if (!GamePhaseValidateHelper.IsValid())
+        {
             return;
         }
 

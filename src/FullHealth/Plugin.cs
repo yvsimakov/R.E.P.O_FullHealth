@@ -15,8 +15,8 @@ public class Plugin : BaseUnityPlugin
         Logger = base.Logger;
         ConfigurationHelper.Bind(Config);
         var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-        harmony.PatchAll(typeof(FullHealthMultiPlayerPatch));
-        harmony.PatchAll(typeof(FullHealthSinglePlayerPatch));
-        Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
+        harmony.PatchAll();
+        Logger.LogInfo($"Mod '{MyPluginInfo.PLUGIN_GUID}' is loaded!");
+        Logger.LogInfo("Configuration can be changed in 'BepInEx/config/FullHealth.cfg'");
     }
 }

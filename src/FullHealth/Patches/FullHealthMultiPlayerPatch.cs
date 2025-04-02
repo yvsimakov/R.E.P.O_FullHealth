@@ -4,15 +4,16 @@ using HarmonyLib;
 namespace FullHealth;
 
 [HarmonyPatch(typeof(RoundDirector), nameof(RoundDirector.StartRoundRPC))]
-public class FullHealthMultiPlayerPatch
+public class FullHealthMultiplayerPatch
 {
     // ReSharper disable once InconsistentNaming
     private static void Postfix()
     {
         Plugin.Logger.LogDebug("StartRoundRPC patch");
 
-        if (!ValidateHelper.IsValid())
+        if (!Configuration.Enabled.Value)
         {
+            Plugin.Logger.LogDebug("The mod is disabled, so health is not changed");
             return;
         }
 
@@ -24,7 +25,12 @@ public class FullHealthMultiPlayerPatch
 
         if (Configuration.WorkMode.Value == WorkMode.Host && !SemiFunc.IsMasterClient())
         {
-            Plugin.Logger.LogDebug("This is not a master client");
+            Plugin.Logger.LogDebug("This is not a host");
+            return;
+        }
+
+        if (!GamePhaseValidateHelper.IsValid())
+        {
             return;
         }
 
