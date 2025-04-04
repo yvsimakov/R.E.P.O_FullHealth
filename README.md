@@ -21,7 +21,12 @@ health after the previous level.
 - You can also activate heal for all players or yourself even if you are a client in the configuration.
 - Works in multiplayer and in single player.
 - All features can be changed in the configuration.
--
+- You can set `Percent` value to `x` and set `PhaseMode` to one of `Lobby` or `Level` in configuration to always get up
+  to `x`% HP.
+- You can set `ExactValue` to `x` and set `PhaseMode` to one of `Lobby` or `Level` in configuration to always get healed
+  for `x` HP.
+- You can set `HealthPackMode` to `All` or other combinations and set `PhaseMode` to one of `Lobby` or `Level` in
+  configuration to simulate the health pack bug.
 
 ## Installation
 
