@@ -1,10 +1,18 @@
 # Change Log
 
+## [1.5.0] - 2025-04-04
+
+### Added
+
+- Parameter `ExactValue` - sets the exact value to heal.
+- Parameter `HealthPackMode` - sets healing value options to the same as in health packs, one of which will be applied
+  randomly
+
 ## [1.4.0] - 2025-04-02
 
 ### Added
 
-- Parameter `PhaseMode` - configures the phases in which the mod works (Level, Shop, Lobby, All) 
+- Parameter `PhaseMode` - configures the phases in which the mod works (Level, Shop, Lobby, All)
 
 ### Fixed
 

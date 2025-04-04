@@ -1,7 +1,11 @@
+using System;
+
 namespace FullHealth;
 
 public static class HealPlayerHelper
 {
+    private static readonly Random Random = new();
+
     public static void Heal(PlayerAvatar player)
     {
         if (player?.playerHealth == null)
@@ -11,18 +15,36 @@ public static class HealPlayerHelper
         }
 
         var playerHealthValue = player.playerHealth.health;
-        var expectedHealth = decimal.ToInt32(player.playerHealth.maxHealth * (Configuration.Percent.Value / 100));
 
-        if (playerHealthValue >= expectedHealth)
+        int healValue;
+
+        if (Configuration.HealthPackModeValues is { Length: > 0 })
         {
-            Plugin.Logger.LogDebug(
-                $"The health of the player '{player.playerName}' is '{playerHealthValue}' " +
-                $"and this is is more or equal than expected '{expectedHealth}', so health is not changed");
-            return;
+            var index = Configuration.HealthPackModeValues.Length == 1 ? 0 : Random.Next(0, Configuration.HealthPackModeValues.Length);
+            healValue = Configuration.HealthPackModeValues[index];
+        }
+        else if (Configuration.ExactValue.Value > 0)
+        {
+            healValue = Configuration.ExactValue.Value;
+        }
+        else
+        {
+            var expectedHealth = decimal.ToInt32(player.playerHealth.maxHealth * (Configuration.Percent.Value / 100));
+
+            if (playerHealthValue >= expectedHealth)
+            {
+                Plugin.Logger.LogDebug(
+                    $"The health of the player '{player.playerName}' is '{playerHealthValue}' " +
+                    $"and this is is more or equal than expected '{expectedHealth}', so health is not changed");
+                return;
+            }
+
+            healValue = expectedHealth - playerHealthValue;
         }
 
-        player.playerHealth.HealOther(expectedHealth - playerHealthValue, true);
+        player.playerHealth.HealOther(healValue, true);
 
-        Plugin.Logger.LogDebug($"The health of the player '{player.playerName}' has been changed from '{playerHealthValue}' to '{expectedHealth}'");
+        Plugin.Logger.LogDebug($"Player '{player.playerName}' with '{playerHealthValue}' health received '{healValue}' HP. " +
+                               $"So player should have '{Math.Min(player.playerHealth.maxHealth, playerHealthValue + healValue)}' HP");
     }
 }

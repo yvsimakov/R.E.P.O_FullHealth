@@ -13,7 +13,7 @@ public class FullHealthSinglePlayerPatch
 
         if (!Configuration.Enabled.Value)
         {
-            Plugin.Logger.LogDebug("The mod is disabled, so health is not changed");
+            Plugin.Logger.LogDebug("The mod is disabled, so HP is not changed");
             return;
         }
 
