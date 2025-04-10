@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.5.2] - 2025-04-11
+
+### Fixed
+
+Fixed support for Vortex Mod Manager
+
 ## [1.5.1] - 2025-04-04
 
 ### Fixed
