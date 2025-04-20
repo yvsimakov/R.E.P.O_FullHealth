@@ -4,16 +4,17 @@ using HarmonyLib;
 namespace FullHealth;
 
 [HarmonyPatch(typeof(RoundDirector), nameof(RoundDirector.StartRound))]
-public class FullHealthSinglePlayerPatch
+public class RoundDirectorStartRoundPatch
 {
-    // ReSharper disable once InconsistentNaming
+    [HarmonyPostfix]
+    // ReSharper disable once UnusedMember.Local
     private static void Postfix()
     {
-        Plugin.Logger.LogDebug("StartRound patch");
+        Plugin.Logger.LogDebug($"{nameof(RoundDirector)}.{nameof(RoundDirector.StartRound)} patch");
 
         if (!Configuration.Enabled.Value)
         {
-            Plugin.Logger.LogDebug("The mod is disabled, so HP is not changed");
+            Plugin.Logger.LogDebug("The mod is disabled");
             return;
         }
 
@@ -23,8 +24,16 @@ public class FullHealthSinglePlayerPatch
             return;
         }
 
+        if (!WorkModeValidatorHelper.Validate())
+        {
+            return;
+        }
+
+        AlivePlayersHelper.AddAllOnGameStart();
+
         if (!GamePhaseValidateHelper.IsValid())
         {
+            AlivePlayersHelper.AddAllOnLevelStart();
             return;
         }
 

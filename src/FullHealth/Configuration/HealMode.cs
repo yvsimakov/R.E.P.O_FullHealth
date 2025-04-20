@@ -1,7 +1,11 @@
+using System;
+
 namespace FullHealth;
 
+[Flags]
 public enum HealMode : byte
 {
-    All = 0,
-    Self = 1
+    Self = 1 << 0,
+    Others = 1 << 1,
+    All = Self | Others
 }

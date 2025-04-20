@@ -1,19 +1,21 @@
 using System.Threading.Tasks;
 using HarmonyLib;
+using Steamworks.Data;
 
 namespace FullHealth;
 
 [HarmonyPatch(typeof(RoundDirector), nameof(RoundDirector.StartRoundRPC))]
-public class FullHealthMultiplayerPatch
+public class RoundDirectorStartRoundRPCPatch
 {
-    // ReSharper disable once InconsistentNaming
+    [HarmonyPostfix]
+    // ReSharper disable once UnusedMember.Local
     private static void Postfix()
     {
-        Plugin.Logger.LogDebug("StartRoundRPC patch");
-
+        Plugin.Logger.LogDebug($"{nameof(RoundDirector)}.{nameof(RoundDirector.StartRoundRPC)} patch");
+        
         if (!Configuration.Enabled.Value)
         {
-            Plugin.Logger.LogDebug("The mod is disabled, so health is not changed");
+            Plugin.Logger.LogDebug("The mod is disabled");
             return;
         }
 
@@ -23,14 +25,16 @@ public class FullHealthMultiplayerPatch
             return;
         }
 
-        if (Configuration.WorkMode.Value == WorkMode.Host && !SemiFunc.IsMasterClient())
+        if (!WorkModeValidatorHelper.Validate())
         {
-            Plugin.Logger.LogDebug("This is not a host");
             return;
         }
 
+        AlivePlayersHelper.AddAllOnGameStart();
+
         if (!GamePhaseValidateHelper.IsValid())
         {
+            AlivePlayersHelper.AddAllOnLevelStart();
             return;
         }
 

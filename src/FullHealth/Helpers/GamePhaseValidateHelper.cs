@@ -38,6 +38,11 @@ public static class GamePhaseValidateHelper
             return PhaseMode.Lobby;
         }
 
+        if (SemiFunc.RunIsArena())
+        {
+            return PhaseMode.Arena;
+        }
+
         return null;
     }
 }

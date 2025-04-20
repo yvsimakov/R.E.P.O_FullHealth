@@ -11,5 +11,6 @@ public static class Configuration
     public static ConfigEntry<PhaseMode> PhaseMode { get; set; }
     public static ConfigEntry<int> ExactValue { get; set; }
     public static ConfigEntry<HealthPackMode> HealthPackMode { get; set; }
+    public static ConfigEntry<HealRequirementMode> HealRequirementMode { get; set; }
     internal static int[] HealthPackModeValues { get; set; } = [];
 }

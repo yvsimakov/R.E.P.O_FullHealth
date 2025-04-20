@@ -6,37 +6,37 @@ public static class HealHelper
 {
     public static async Task Heal()
     {
+        try
+        {
+            await InternalHeal();
+        }
+        finally
+        {
+            AlivePlayersHelper.AddAllOnLevelStart();
+        }
+    }
+
+    private static async Task InternalHeal()
+    {
         if (!await WaitHelper.Wait())
         {
             return;
         }
 
-        switch (Configuration.HealMode.Value)
+        foreach (var player in PlayersHelper.Get())
         {
-            case HealMode.All:
+            switch (player.isLocal)
             {
-                foreach (var player in PlayersHelper.Get())
-                {
-                    HealPlayerHelper.Heal(player);
-                }
-
-                break;
-            }
-            case HealMode.Self:
-            {
-                var player = SemiFunc.PlayerAvatarLocal();
-                if (player == null)
-                {
-                    Plugin.Logger.LogWarning("An error occurred while retrieving data about yourself");
+                case true when !Configuration.HealMode.Value.HasFlag(HealMode.Self):
+                    Plugin.Logger.LogDebug("Self-healing disabled");
                     return;
-                }
-
-                HealPlayerHelper.Heal(SemiFunc.PlayerAvatarLocal());
-                break;
+                case false when !Configuration.HealMode.Value.HasFlag(HealMode.Others):
+                    Plugin.Logger.LogDebug("Heal others disabled");
+                    return;
+                default:
+                    HealPlayerHelper.Heal(player);
+                    break;
             }
-            default:
-                Plugin.Logger.LogWarning("Unknown HealMode value");
-                break;
         }
     }
 }

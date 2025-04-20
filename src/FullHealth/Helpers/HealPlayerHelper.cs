@@ -14,6 +14,12 @@ public static class HealPlayerHelper
             return;
         }
 
+        if (!AlivePlayersHelper.ValidateSurviveRequirement(player))
+        {
+            Plugin.Logger.LogDebug($"The player '{player.playerName}' did not survive and will not be healed");
+            return;
+        }
+        
         var playerHealthValue = player.playerHealth.health;
 
         int healValue;
