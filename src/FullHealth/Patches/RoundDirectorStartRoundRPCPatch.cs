@@ -12,7 +12,7 @@ public class RoundDirectorStartRoundRPCPatch
     private static void Postfix()
     {
         Plugin.Logger.LogDebug($"{nameof(RoundDirector)}.{nameof(RoundDirector.StartRoundRPC)} patch");
-        
+
         if (!Configuration.Enabled.Value)
         {
             Plugin.Logger.LogDebug("The mod is disabled");

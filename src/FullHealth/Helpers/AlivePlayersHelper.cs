@@ -10,7 +10,6 @@ internal static class AlivePlayersHelper
     {
         if (!ValidateRequirementAndRunIsLevel())
         {
-            Plugin.Logger.LogDebug("Survive requirement is disabled or this is not a level");
             return;
         }
 
@@ -22,7 +21,6 @@ internal static class AlivePlayersHelper
     {
         if (!ValidateRequirementAndRunIsLevel())
         {
-            Plugin.Logger.LogDebug("Survive requirement is disabled or this is not a level");
             return;
         }
 
@@ -34,7 +32,6 @@ internal static class AlivePlayersHelper
     {
         if (!ValidateRequirement())
         {
-            Plugin.Logger.LogDebug("Survive requirement is disabled");
             return true;
         }
 
@@ -47,7 +44,6 @@ internal static class AlivePlayersHelper
     {
         if (!ValidateRequirement())
         {
-            Plugin.Logger.LogDebug("Survive requirement is disabled");
             return;
         }
 
@@ -71,7 +67,6 @@ internal static class AlivePlayersHelper
     {
         if (!ValidateRequirementAndRunIsLevel())
         {
-            Plugin.Logger.LogDebug("Survive requirement is disabled or this is not a level");
             return;
         }
 

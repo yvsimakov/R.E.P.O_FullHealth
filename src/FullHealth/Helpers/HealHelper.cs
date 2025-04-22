@@ -23,7 +23,8 @@ public static class HealHelper
             return;
         }
 
-        foreach (var player in PlayersHelper.Get())
+        var players = PlayersHelper.Get();
+        foreach (var player in players)
         {
             switch (player.isLocal)
             {
@@ -34,7 +35,7 @@ public static class HealHelper
                     Plugin.Logger.LogDebug("Heal others disabled");
                     return;
                 default:
-                    HealPlayerHelper.Heal(player);
+                    HealPlayerHelper.Heal(player, players.Count);
                     break;
             }
         }

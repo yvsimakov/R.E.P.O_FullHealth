@@ -1,10 +1,23 @@
 # Change Log
 
+## [1.7.0] - 2025-04-22
+
+### Added
+
+- `ByMaxHealthPercentage` configuration parameter. Healing is performed based on a percentage of maximum health.
+- `Expression` configuration parameter. Allows you to calculate the heal value using your expression. Uses
+  the https://mathparser.org/ library for calculations.
+
+### Fixed
+
+- `Percent` configuration parameter renamed to `ToMaxHealthPercentage` for clarity. It is responsible for healing up to
+  a certain percentage of maximum health.
+
 ## [1.6.0] - 2025-04-20
 
 ### Added
 
-- Added the ability to enable the requirement to return to the truck and survive at the end of the round to receive
+- The ability to enable the requirement to return to the truck and survive at the end of the round to receive
   healing in the next round.
   The `HealRequirementMode` configuration parameter must be set to `Survive` for this.
 - `Arena` variant added to the `PhaseMode` configuration parameter.
