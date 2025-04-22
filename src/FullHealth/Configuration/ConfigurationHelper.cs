@@ -41,9 +41,9 @@ public static class ConfigurationHelper
             "It has priority over the `ToMaxHealthPercentage` and `ByMaxHealthPercentage` and `ExactValue` and `HealthPackMode` parameters.\r\n" +
             "The library used to parse expression is https://mathparser.org/ . You can find detailed information in the documentation.\r\n" +
             "Variables:\r\n" +
-            $"{ExpressionHelper.PlayerMaxHealthConstName} - player's maximum health.\r\n" +
-            $"{ExpressionHelper.PlayerHealthConstName} - player's health.\r\n" +
-            $"{ExpressionHelper.PlayerCountConstName} - number of players.\r\n" +
+            $"`{ExpressionHelper.PlayerMaxHealthConstName}` - player's maximum health.\r\n" +
+            $"`{ExpressionHelper.PlayerHealthConstName}` - player's health.\r\n" +
+            $"`{ExpressionHelper.PlayerCountConstName}` - number of players.\r\n" +
             "Examples (quotation marks should be removed):\r\n" +
             $"`max((({ExpressionHelper.PlayerMaxHealthConstName}*0.8)-{ExpressionHelper.PlayerHealthConstName}),0)` - analog of the `ToMaxHealthPercentage` parameter. The player will be healed to 80% of maximum health.\r\n" +
             $"`{ExpressionHelper.PlayerMaxHealthConstName}*0.3` - analog of `ByMaxHealthPercentage` parameter. The player will be healed by 30% of maximum health.\r\n" +
@@ -53,7 +53,7 @@ public static class ConfigurationHelper
         Configuration.Expression.SettingChanged += (_, _) => ExpressionHelper.UpdateExpression(Configuration.Expression.Value);
         Configuration.WorkMode = config.Bind("General", "WorkMode", WorkMode.Host,
             "Configures the work mode.\r\n" +
-            "Warning: You are using `All` value for this parameter at your own risk.\r\n" +
+            "Warning: You are using `All` or `Client` values for this parameter at your own risk.\r\n" +
             "It may stop working after future game updates.\r\n" +
             "If another lobby players do not agree with this parameter, do not use it.\r\n" +
             "Also, the incomplete heal may not work correctly with this parameter, since the host or other clients may also perform the heal.\r\n" +

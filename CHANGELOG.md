@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.7.1] - 2025-04-23
+
+### Fixed
+
+- Configuration description and README.md.
+
 ## [1.7.0] - 2025-04-22
 
 ### Added
