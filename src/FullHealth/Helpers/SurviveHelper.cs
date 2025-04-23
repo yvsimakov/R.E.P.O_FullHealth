@@ -2,51 +2,44 @@ using System.Collections.Generic;
 
 namespace FullHealth;
 
-internal static class AlivePlayersHelper
+internal static class SurviveHelper
 {
     private static HashSet<string> Players { get; } = [];
 
     internal static void Add(PlayerAvatar player)
     {
-        if (!ValidateRequirementAndRunIsLevel())
+        if (!SemiFunc.RunIsLevel())
         {
             return;
         }
 
-        Players.Add(GetPlayerKey(player));
+        Players.Add(player.steamID);
         Plugin.Logger.LogDebug($"Player '{player.playerName}' has been added to the list");
     }
 
     internal static void Delete(PlayerAvatar player)
     {
-        if (!ValidateRequirementAndRunIsLevel())
+        if (!SemiFunc.RunIsLevel())
         {
             return;
         }
 
-        Players.Remove(GetPlayerKey(player));
+        Players.Remove(player.steamID);
         Plugin.Logger.LogDebug($"Player '{player.playerName}' has been removed from the list.");
     }
 
-    internal static bool ValidateSurviveRequirement(PlayerAvatar player)
+    internal static bool Check(PlayerAvatar player)
     {
-        if (!ValidateRequirement())
-        {
-            return true;
-        }
+        return Check(player.steamID);
+    }
 
-        var result = Players.Contains(GetPlayerKey(player));
-        Plugin.Logger.LogDebug($"Status of checking whether the player '{player.playerName}' in the list is '{result}'");
-        return result;
+    internal static bool Check(string steamId)
+    {
+        return Players.Contains(steamId);
     }
 
     internal static void AddAllOnGameStart()
     {
-        if (!ValidateRequirement())
-        {
-            return;
-        }
-
         if (SemiFunc.RunIsLobbyMenu())
         {
             _isItGameStart = true;
@@ -65,7 +58,7 @@ internal static class AlivePlayersHelper
 
     internal static void AddAllOnLevelStart()
     {
-        if (!ValidateRequirementAndRunIsLevel())
+        if (!SemiFunc.RunIsLevel())
         {
             return;
         }
@@ -79,25 +72,10 @@ internal static class AlivePlayersHelper
 
         foreach (var player in PlayersHelper.Get())
         {
-            Players.Add(GetPlayerKey(player));
+            Players.Add(player.steamID);
             Plugin.Logger.LogDebug($"Player '{player.playerName}' has been added to the list");
         }
     }
 
-    private static string GetPlayerKey(PlayerAvatar player)
-    {
-        return !string.IsNullOrWhiteSpace(player.steamID) ? player.steamID : player.name;
-    }
-
     private static bool _isItGameStart;
-
-    private static bool ValidateRequirement()
-    {
-        return Configuration.HealRequirementMode.Value.HasFlag(HealRequirementMode.Survive);
-    }
-
-    private static bool ValidateRequirementAndRunIsLevel()
-    {
-        return ValidateRequirement() && SemiFunc.RunIsLevel();
-    }
 }

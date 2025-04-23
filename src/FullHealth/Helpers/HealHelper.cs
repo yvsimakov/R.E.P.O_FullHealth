@@ -12,7 +12,7 @@ public static class HealHelper
         }
         finally
         {
-            AlivePlayersHelper.AddAllOnLevelStart();
+            SurviveHelper.AddAllOnLevelStart();
         }
     }
 

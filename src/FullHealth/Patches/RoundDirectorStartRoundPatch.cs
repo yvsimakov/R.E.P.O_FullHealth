@@ -29,11 +29,11 @@ public class RoundDirectorStartRoundPatch
             return;
         }
 
-        AlivePlayersHelper.AddAllOnGameStart();
+        SurviveHelper.AddAllOnGameStart();
 
         if (!GamePhaseValidateHelper.IsValid())
         {
-            AlivePlayersHelper.AddAllOnLevelStart();
+            SurviveHelper.AddAllOnLevelStart();
             return;
         }
 

@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using org.mariuszgromada.math.mxparser;
 
 namespace FullHealth;
 
@@ -13,7 +12,6 @@ public class Plugin : BaseUnityPlugin
 
     private void Awake()
     {
-        License.iConfirmNonCommercialUse("yvsimakov");
         Logger = base.Logger;
         ConfigurationHelper.Bind(Config);
         var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);

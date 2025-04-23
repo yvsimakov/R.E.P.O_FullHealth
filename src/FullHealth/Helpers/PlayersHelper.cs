@@ -6,20 +6,34 @@ public static class PlayersHelper
 {
     public static List<PlayerAvatar> Get()
     {
-        var players = SemiFunc.PlayerGetList();
-
-        if (players is { Count: > 0 })
+        try
         {
-            return players;
+            var players = SemiFunc.PlayerGetList();
+            if (players is { Count: > 0 })
+            {
+                return players;
+            }
+        }
+        catch
+        {
+            Plugin.Logger.LogError("An error occurred while retrieving the list of players");
+            // ignored
         }
 
-        var player = SemiFunc.PlayerAvatarLocal();
-
-        if (player != null)
+        try
         {
-            return [player];
-        }
+            var player = SemiFunc.PlayerAvatarLocal();
+            if (player != null)
+            {
+                return [player];
+            }
 
-        return [];
+            return [];
+        }
+        catch
+        {
+            Plugin.Logger.LogError("An error occurred while getting the local player");
+            return [];
+        }
     }
 }

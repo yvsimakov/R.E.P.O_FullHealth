@@ -15,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.md = LICENSE.md
 		showcase\WithMod.gif = showcase\WithMod.gif
 		showcase\WithoutMod.gif = showcase\WithoutMod.gif
-		MathParser.org-mXparser.LICENSE.md = MathParser.org-mXparser.LICENSE.md
 	EndProjectSection
 EndProject
 Global

@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.8.0] - 2025-04-23
+
+### Added
+
+- New variables for expressions.
+
+### Updated
+
+- **Breaking change:** The library for parsing expressions has been replaced
+  from [MathParser.org-mXparser](https://mathparser.org/) to [Expressive](https://github.com/bijington/expressive/).
+
 ## [1.7.1] - 2025-04-23
 
 ### Fixed
@@ -12,7 +23,7 @@
 
 - `ByMaxHealthPercentage` configuration parameter. Healing is performed based on a percentage of maximum health.
 - `Expression` configuration parameter. Allows you to calculate the heal value using your expression. Uses
-  the https://mathparser.org/ library for calculations.
+  the [MathParser.org-mXparser](https://mathparser.org/) library for calculations.
 
 ### Fixed
 

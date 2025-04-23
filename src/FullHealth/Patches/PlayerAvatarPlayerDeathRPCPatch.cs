@@ -17,6 +17,6 @@ public class PlayerAvatarPlayerDeathRPCPatch
             return;
         }
 
-        AlivePlayersHelper.Delete(__instance);
+        SurviveHelper.Delete(__instance);
     }
 }

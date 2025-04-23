@@ -1,6 +1,6 @@
 {
   "name": "FullHealth",
-  "version_number": "1.7.1",
+  "version_number": "1.8.0",
   "website_url": "https://github.com/yvsimakov/R.E.P.O_FullHealth",
   "description": "A mod for the game R.E.P.O that restores full health to players at the beginning of each level.",
   "dependencies": []

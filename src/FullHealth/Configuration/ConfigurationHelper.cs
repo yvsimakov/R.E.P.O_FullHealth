@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
+using FullHealth.Expressions;
 
 namespace FullHealth;
 
@@ -37,18 +38,32 @@ public static class ConfigurationHelper
         Configuration.Expression = config.Bind<string>("General", "Expression", null,
             "The expression used to calculate the healing value.\r\n" +
             "Attention! You must set the `PhaseMode` parameter to only one of `Level` or `Lobby`, not both. Otherwise, the healing will be done twice.\r\n" +
-            "If the value is null or empty string or whitespace, then it is disabled.\r\n" +
+            "If the value is null or empty or whitespace, then it is disabled.\r\n" +
             "It has priority over the `ToMaxHealthPercentage` and `ByMaxHealthPercentage` and `ExactValue` and `HealthPackMode` parameters.\r\n" +
-            "The library used to parse expression is https://mathparser.org/ . You can find detailed information in the documentation.\r\n" +
+            "The library used to parse expression is https://github.com/bijington/expressive. You can find detailed information in the documentation.\r\n" +
             "Variables:\r\n" +
-            $"`{ExpressionHelper.PlayerMaxHealthConstName}` - player's maximum health.\r\n" +
-            $"`{ExpressionHelper.PlayerHealthConstName}` - player's health.\r\n" +
-            $"`{ExpressionHelper.PlayerCountConstName}` - number of players.\r\n" +
+            $"`[{ExpressionHelper.PlayerName}]` - player's name.\r\n" +
+            $"`[{ExpressionHelper.PlayerMaxHealthName}]` - player's maximum health.\r\n" +
+            $"`[{ExpressionHelper.PlayerHealthName}]` - player's health.\r\n" +
+            $"`[{ExpressionHelper.PlayerSurvivedName}]` - whether the player survived the last round.\r\n" +
+            $"`[{ExpressionHelper.PlayerCountName}]` - number of players.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeHealthName}]` - player's upgrade health level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeStaminaName}]` - player's upgrade stamina level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeExtraJumpName}]` - player's upgrade extra jump level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeLaunchName}]` - player's upgrade launch level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeMapPlayerCountName}]` - player's upgrade map player count level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeSpeedName}]` - player's upgrade speed level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeStrengthName}]` - player's upgrade strength level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeThrowName}]` - player's upgrade throw level.\r\n" +
+            $"`[{ExpressionHelper.PlayerUpgradeRangeName}]` - player's upgrade range level.\r\n" +
+            "Custom functions (Standard functions can be found here https://github.com/bijington/expressive/wiki/Functions):\r\n" +
+            $"`{RandomListFunction.FunctionName}(x1, x2, x3...)` - selects a random number from a list. For example, `RandomList(10, 20)` will randomly return `10` or `20`\r\n" +
             "Examples (quotation marks should be removed):\r\n" +
-            $"`max((({ExpressionHelper.PlayerMaxHealthConstName}*0.8)-{ExpressionHelper.PlayerHealthConstName}),0)` - analog of the `ToMaxHealthPercentage` parameter. The player will be healed to 80% of maximum health.\r\n" +
-            $"`{ExpressionHelper.PlayerMaxHealthConstName}*0.3` - analog of `ByMaxHealthPercentage` parameter. The player will be healed by 30% of maximum health.\r\n" +
-            "`40` - analog of `ExactValue` parameter. The player will be healed for 40HP.\r\n" +
-            "`rList(25,50,100)` - analog of `HealthPackMode` parameter. The player will be randomly healed for 25HP or 50HP or 100HP.");
+            $"`Max((([{ExpressionHelper.PlayerMaxHealthName}]*0.8)-[{ExpressionHelper.PlayerHealthName}]),0)` - same as the `ToMaxHealthPercentage` parameter. The player will be healed to 80% of maximum health.\r\n" +
+            $"`[{ExpressionHelper.PlayerMaxHealthName}]*0.3` - same as `ByMaxHealthPercentage` parameter. The player will be healed by 30% of maximum health.\r\n" +
+            "`40` - same as `ExactValue` parameter. The player will be healed for 40HP.\r\n" +
+            "`RandomList(25, 50, 100)` - same as `HealthPackMode` parameter. The player will be randomly healed for 25HP or 50HP or 100HP.\r\n" +
+            "`[PlayerMaxHealth] * (If([PlayerCount] <= 2, Random(25, 30), If([PlayerCount] <= 4, Random(35, 40), If([PlayerCount] <= 6, Random(45, 50), Random(55, 60))))/100)` - if there are up to two players, it heals randomly by 25-30 HP. If there are up to four players, it heals randomly by 35-40 HP, and so on.");
         ExpressionHelper.UpdateExpression(Configuration.Expression.Value);
         Configuration.Expression.SettingChanged += (_, _) => ExpressionHelper.UpdateExpression(Configuration.Expression.Value);
         Configuration.WorkMode = config.Bind("General", "WorkMode", WorkMode.Host,
@@ -110,19 +125,20 @@ public static class ConfigurationHelper
             const int playerMaxHealth = 100;
             const int playerHealth = 30;
             const int playerCount = 4;
-            var result = ExpressionHelper.Calculate("TestPlayer", playerMaxHealth, playerHealth, playerCount);
-            if (double.IsNaN(result))
+
+            try
             {
-                Plugin.Logger.LogError("An error occurred while testing the heal calculation using the expression. Please fix the expression and restart the game.");
-            }
-            else
-            {
+                var result = ExpressionHelper.Calculate("TestPlayer", playerMaxHealth, playerHealth, Guid.NewGuid().ToString(), playerCount);
                 Plugin.Logger.LogInfo($"Calculation test of the healing completed. " +
                                       $"Variables: " +
-                                      $"{ExpressionHelper.PlayerMaxHealthConstName}='{playerMaxHealth}', " +
-                                      $"{ExpressionHelper.PlayerHealthConstName}='{playerHealth}', " +
-                                      $"{ExpressionHelper.PlayerCountConstName}='{playerCount}'. " +
+                                      $"{ExpressionHelper.PlayerMaxHealthName}='{playerMaxHealth}', " +
+                                      $"{ExpressionHelper.PlayerHealthName}='{playerHealth}', " +
+                                      $"{ExpressionHelper.PlayerCountName}='{playerCount}'. " +
                                       $"Result: '{result}'");
+            }
+            catch (Exception e)
+            {
+                Plugin.Logger.LogError("An error occurred while calculating the heal value. Please check the expression: " + e.Message);
             }
         }
     }

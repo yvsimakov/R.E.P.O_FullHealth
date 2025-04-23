@@ -17,6 +17,6 @@ public class PlayerAvatarReviveRPCPatch
             return;
         }
 
-        AlivePlayersHelper.Add(__instance);
+        SurviveHelper.Add(__instance);
     }
 }

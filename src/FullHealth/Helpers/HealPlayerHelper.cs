@@ -14,7 +14,7 @@ public static class HealPlayerHelper
             return;
         }
 
-        if (!AlivePlayersHelper.ValidateSurviveRequirement(player))
+        if (Configuration.HealRequirementMode.Value.HasFlag(HealRequirementMode.Survive) && !SurviveHelper.Check(player))
         {
             Plugin.Logger.LogDebug($"The player '{player.playerName}' did not survive and will not be healed");
             return;
@@ -26,15 +26,15 @@ public static class HealPlayerHelper
 
         if (!string.IsNullOrWhiteSpace(Configuration.Expression.Value))
         {
-            var result = ExpressionHelper.Calculate(player, playerCount);
-
-            if (double.IsNaN(result))
+            try
             {
-                Plugin.Logger.LogError($"Error in calculating the heal value for player '{player.playerName}' using the expression. Check the expression.");
+                healValue = ExpressionHelper.Calculate(player, playerCount);
+            }
+            catch (Exception e)
+            {
+                Plugin.Logger.LogError("An error occurred while calculating the heal value. Please check the expression: " + e.Message);
                 return;
             }
-
-            healValue = Convert.ToInt32(result);
         }
         else if (Configuration.HealthPackModeValues is { Length: > 0 })
         {

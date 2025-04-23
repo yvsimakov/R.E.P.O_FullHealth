@@ -30,11 +30,11 @@ public class RoundDirectorStartRoundRPCPatch
             return;
         }
 
-        AlivePlayersHelper.AddAllOnGameStart();
+        SurviveHelper.AddAllOnGameStart();
 
         if (!GamePhaseValidateHelper.IsValid())
         {
-            AlivePlayersHelper.AddAllOnLevelStart();
+            SurviveHelper.AddAllOnLevelStart();
             return;
         }
 
