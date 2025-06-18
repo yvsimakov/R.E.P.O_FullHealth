@@ -11,12 +11,6 @@ public class PlayerAvatarPlayerDeathRPCPatch
     {
         Plugin.Logger.LogDebug($"{nameof(PlayerAvatar)}.{nameof(PlayerAvatar.PlayerDeathRPC)} patch");
 
-        if (!Configuration.Enabled.Value)
-        {
-            Plugin.Logger.LogDebug("The mod is disabled");
-            return;
-        }
-
         SurviveHelper.Delete(__instance);
     }
 }

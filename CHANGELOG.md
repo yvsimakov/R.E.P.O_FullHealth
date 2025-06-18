@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.9.0] - 2025-06-18
+
+### Added
+
+- Almost all parameters except `HealRequirementMode` are duplicated in an additional section `Revival` for configuring
+  the heal after revival.
+
 ## [1.8.0] - 2025-04-23
 
 ### Added

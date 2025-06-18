@@ -24,30 +24,32 @@ public static class ExpressionHelper
     public const string PlayerUpgradeRangeName = "PlayerUpgradeRange";
     private static readonly object LockObject = new();
 
+    private static readonly Dictionary<ConfigurationMode, Expression> _expressions = new()
+    {
+        { ConfigurationMode.Start, new(string.Empty) },
+        { ConfigurationMode.Revival, new(string.Empty) },
+    };
 
-    private static Expression _expression = new(string.Empty);
-
-    public static void UpdateExpression(string expression)
+    public static void UpdateExpression(ConfigurationMode mode, string expression)
     {
         lock (LockObject)
         {
-            _expression = new(expression);
-            _expression.RegisterFunction(RandomListFunction.Instance);
+            _expressions[mode] = new(expression);
+            _expressions[mode].RegisterFunction(RandomListFunction.Instance);
         }
     }
 
-
-    public static int Calculate(PlayerAvatar player, int playerCount)
+    public static int Calculate(ConfigurationMode mode, PlayerAvatar player, int playerCount)
     {
-        return Calculate(player.playerName, player.playerHealth.maxHealth, player.playerHealth.health, player.steamID, playerCount);
+        return Calculate(mode, player.playerName, player.playerHealth.maxHealth, player.playerHealth.health, player.steamID, playerCount);
     }
 
-    public static int Calculate(string playerName, int playerMaxHealth, int playerHealth, string playerSteamId, int playerCount)
+    public static int Calculate(ConfigurationMode mode, string playerName, int playerMaxHealth, int playerHealth, string playerSteamId, int playerCount)
     {
         lock (LockObject)
         {
             var variableProvider = new VariableProvider(playerName, playerMaxHealth, playerHealth, playerSteamId, playerCount);
-            var value = _expression.Evaluate(variableProvider);
+            var value =  _expressions[mode].Evaluate(variableProvider);
             return Convert.ToInt32(value);
         }
     }

@@ -2,7 +2,7 @@ namespace FullHealth;
 
 public static class GamePhaseValidateHelper
 {
-    public static bool IsValid()
+    public static bool IsValid(ConfigurationMode mode)
     {
         var gamePhaseMode = GetGamePhaseMode();
 
@@ -12,7 +12,7 @@ public static class GamePhaseValidateHelper
             return false;
         }
 
-        if (!Configuration.PhaseMode.Value.HasFlag(gamePhaseMode.Value))
+        if (!Configuration.Items[mode].PhaseMode.Value.HasFlag(gamePhaseMode.Value))
         {
             Plugin.Logger.LogDebug("Healing in this phase is disabled in the configuration");
             return false;
